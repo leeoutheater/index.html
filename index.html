@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>더블앵커 홍보자료 다운로드</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f0eef8;padding:20px 16px 40px}
+h1{font-size:16px;font-weight:800;color:#26215C;margin-bottom:4px;text-align:center}
+p.sub{font-size:12px;color:#888;text-align:center;margin-bottom:12px;line-height:1.6}
+.sec{font-size:11px;font-weight:800;color:#534AB7;letter-spacing:.08em;margin:14px auto 8px;max-width:480px;display:block}
+
+/* 공통 슬라이드쇼 */
+.slideshow-wrap{max-width:480px;margin:0 auto 12px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(83,74,183,.15)}
+.slide-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px}
+.slide-header.purple{background:#26215C}
+.slide-header.green{background:#1D9E75}
+.slide-header p{font-size:12px;font-weight:700;color:#fff}
+.slide-header span{font-size:10px;color:rgba(255,255,255,.75)}
+.slide-container{position:relative;overflow:hidden;background:#f5f4ff;cursor:pointer}
+.slide-track{display:flex;transition:transform .5s ease}
+.slide-track canvas{flex-shrink:0;width:100%;height:auto;display:block}
+.slide-dots{display:flex;justify-content:center;gap:6px;padding:8px 0}
+.sdot{width:8px;height:8px;border-radius:50%;background:#ccc;cursor:pointer;transition:background .2s}
+.sdot.purple.on{background:#7F77DD}
+.sdot.green.on{background:#1D9E75}
+.slide-nav{display:flex;justify-content:space-between;padding:0 14px 12px}
+.snav.purple{background:#EEEDFE;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:#534AB7;cursor:pointer;font-family:inherit}
+.snav.purple:hover{background:#534AB7;color:#fff}
+.snav.green{background:#E1F5EE;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:#0F6E56;cursor:pointer;font-family:inherit}
+.snav.green:hover{background:#1D9E75;color:#fff}
+
+/* 신청 섹션 */
+.apply-box{max-width:480px;margin:0 auto 12px;background:linear-gradient(135deg,#26215C,#534AB7);border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(83,74,183,.3)}
+.apply-box-title{font-size:15px;font-weight:800;color:#FFE033;margin-bottom:4px;text-align:center}
+.apply-box-sub{font-size:12px;color:rgba(255,255,255,.8);text-align:center;margin-bottom:14px;line-height:1.6}
+.apply-info{background:rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.apply-info p{font-size:12px;color:#fff;line-height:1.8}
+.apply-info strong{color:#FFE033}
+.apply-deadline{font-size:14px;font-weight:800;color:#FFE033;text-align:center;margin-bottom:14px;background:rgba(0,0,0,.2);border-radius:8px;padding:8px}
+.apply-btn{display:block;width:100%;background:#FFE033;color:#26215C;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;text-align:center;transition:transform .2s}
+.apply-btn:hover{transform:scale(1.02)}
+.apply-btn:active{transform:scale(.97)}
+
+/* 언어 선택 모달 */
+.apply-modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.88);z-index:2000;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.apply-modal-bg.open{display:flex}
+.apply-modal{background:#1a1a24;border:2px solid #FFE033;border-radius:20px;width:100%;max-width:900px;padding:30px 24px 24px;margin:auto;position:relative}
+.apply-modal-title{font-size:18px;font-weight:800;color:#FFE033;text-align:center;margin-bottom:6px}
+.apply-modal-sub{font-size:13px;color:#aaa;text-align:center;margin-bottom:24px}
+.apply-modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#aaa;font-size:28px;cursor:pointer;line-height:1;font-weight:700}
+.apply-modal-close:hover{color:#FFE033}
+.lang-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.lang-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:18px 10px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;transition:all .25s}
+.lang-card:hover{border-color:#FFE033;transform:translateY(-4px)}
+.lang-card h4{font-size:13px;font-weight:700;color:#fff;white-space:nowrap}
+.lang-card .qr-canvas{width:130px;height:130px;background:#fff;border-radius:10px;display:block}
+.lang-card .form-link{display:block;width:100%;background:#FFE033;color:#111;border-radius:8px;padding:9px 4px;font-size:12px;font-weight:800;text-decoration:none;text-align:center;transition:opacity .2s;border:none;cursor:pointer;font-family:inherit}
+.lang-card .form-link:hover{opacity:.85}
+.phone-row{text-align:center;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#aaa}
+.phone-row strong{color:#FFE033;font-size:14px}
+@media(max-width:600px){
+  .lang-cards{grid-template-columns:1fr 1fr}
+  .lang-card:last-child{grid-column:1/-1}
+  .lang-card .qr-wrap{width:110px;height:110px}
+}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:480px;margin:0 auto}
+.card-btn{background:#fff;border:2px solid #AFA9EC;border-radius:14px;padding:0;cursor:pointer;overflow:hidden;transition:border-color .2s,transform .2s;font-family:inherit}
+.card-btn:hover{border-color:#534AB7;transform:scale(1.02)}
+.card-btn:active{transform:scale(.97)}
+.card-btn canvas{width:100%;display:block}
+.card-btn-label{font-size:11px;font-weight:700;color:#534AB7;padding:5px 8px 6px;text-align:center;background:#EEEDFE}
+
+/* 포스터 버튼 그리드 */
+.poster-row{display:flex;gap:12px;max-width:480px;margin:0 auto 12px}
+.poster-box{flex:1;background:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);text-align:center}
+.poster-box img{width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.12);display:block;cursor:pointer;transition:transform .2s}
+.poster-box img:hover{transform:scale(1.03)}
+.poster-box p{font-size:10px;color:#888;margin:5px 0 4px}
+.dl-btn{background:#7F77DD;color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:700;cursor:pointer;width:100%;font-family:inherit}
+.dl-btn:hover{background:#534AB7}
+.dl-btn.green{background:#1D9E75}
+.dl-btn.green:hover{background:#085041}
+
+.btn-all{background:#26215C;color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;width:100%;max-width:480px;display:block;margin:10px auto 0;font-family:inherit}
+.btn-all:hover{background:#000}
+.status{text-align:center;font-size:12px;color:#534AB7;margin-top:10px;min-height:18px;font-weight:700}
+
+/* 모달 */
+.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.88);z-index:1000;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+.modal-bg.open{display:flex}
+.modal-img{max-width:100%;max-height:80vh;border-radius:12px;display:block}
+.modal-label{color:#fff;font-size:13px;font-weight:700;margin-top:12px}
+.modal-btns{display:flex;gap:10px;margin-top:12px}
+.modal-save{background:#7F77DD;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.modal-close{background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+
+<h1>⚓ 더블앵커 홍보자료 다운로드</h1>
+<p class="sub">대표 포스터 + 카드뉴스 6장</p>
+
+<!-- 모달들 -->
+<div class="modal-bg" id="cardModal" onclick="closeModal(event)">
+  <canvas id="modalCanvas" class="modal-img"></canvas>
+  <p class="modal-label" id="modalLabel"></p>
+  <div class="modal-btns">
+    <button class="modal-save" onclick="saveFromModal()">⬇ 저장</button>
+    <button class="modal-close" onclick="closeModalDirect()">✕ 닫기</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="posterModal" onclick="closePModal(event)">
+  <canvas id="posterModalCanvas" class="modal-img"></canvas>
+  <p class="modal-label" id="posterModalLabel"></p>
+  <div class="modal-btns">
+    <button class="modal-save" onclick="savePFromModal()">⬇ 저장</button>
+    <button class="modal-close" onclick="closePModalDirect()">✕ 닫기</button>
+  </div>
+</div>
+
+<!-- 참여 신청 다국어 모달 -->
+<div class="apply-modal-bg" id="applyModal" onclick="closeApplyModal(event)">
+  <div class="apply-modal">
+    <button class="apply-modal-close" onclick="closeApplyModalDirect()">×</button>
+    <p class="apply-modal-title">🌐 프로젝트 참여 신청하기</p>
+    <p class="apply-modal-sub">원하시는 언어를 선택하시거나 QR코드를 스캔하세요.<br>Choose your language or scan the QR code.</p>
+    <div class="lang-cards">
+      <div class="lang-card">
+        <h4>🇰🇷 한국어</h4>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://naver.me/xTyeMHRB" class="qr-canvas" alt="QR 한국어">
+        <a href="https://naver.me/xTyeMHRB" target="_blank" class="form-link">신청서 작성</a>
+      </div>
+      <div class="lang-card">
+        <h4>🇺🇸 English</h4>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://naver.me/5hoU7Z14" class="qr-canvas" alt="QR English">
+        <a href="https://naver.me/5hoU7Z14" target="_blank" class="form-link">Apply Here</a>
+      </div>
+      <div class="lang-card">
+        <h4>🇷🇺 Русский</h4>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://naver.me/F3EDI6T7" class="qr-canvas" alt="QR Russian">
+        <a href="https://naver.me/F3EDI6T7" target="_blank" class="form-link">Подать заявку</a>
+      </div>
+      <div class="lang-card">
+        <h4>🇨🇳 中文</h4>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://naver.me/5zUfUE9M" class="qr-canvas" alt="QR 中文">
+        <a href="https://naver.me/5zUfUE9M" target="_blank" class="form-link">在线申请</a>
+      </div>
+      <div class="lang-card">
+        <h4>🇻🇳 Tiếng Việt</h4>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://naver.me/FaeAtUUr" class="qr-canvas" alt="QR Vietnamese">
+        <a href="https://naver.me/FaeAtUUr" target="_blank" class="form-link">Đăng ký ngay</a>
+      </div>
+    </div>
+    <div class="phone-row">문의 <strong>📞 010-3204-2178</strong> (아단ADAN)</div>
+  </div>
+</div>
+
+<!-- 포스터 슬라이드쇼 (카드뉴스와 완전히 동일한 구조) -->
+<span class="sec">🖼 대표 포스터 (세로형 · 5개 언어)</span>
+<div class="slideshow-wrap" id="pWrap">
+  <div class="slide-header green">
+    <p id="pLabel">한국어 1 / 5</p>
+    <span>클릭하면 전체보기+저장</span>
+  </div>
+  <div class="slide-container" id="pCont" onclick="openPModal()">
+    <div class="slide-track" id="pTrack"></div>
+  </div>
+  <div class="slide-dots" id="pDots"></div>
+  <div class="slide-nav">
+    <button class="snav green" onclick="pPrev()">◀ 이전</button>
+    <button class="snav green" id="pPauseBtn" onclick="pToggle()">⏸ 일시정지</button>
+    <button class="snav green" onclick="pNext()">다음 ▶</button>
+  </div>
+</div>
+
+<!-- 가로형 포스터 슬라이드쇼 (앞면 · 5개 언어) -->
+<span class="sec">🖼 대표 포스터 (가로형 · 5개 언어)</span>
+<div class="slideshow-wrap" id="phWrap">
+  <div class="slide-header green">
+    <p id="phLabel">한국어 1 / 5</p>
+    <span>클릭하면 전체보기+저장</span>
+  </div>
+  <div class="slide-container" id="phCont" onclick="openPHModal()">
+    <div class="slide-track" id="phTrack"></div>
+  </div>
+  <div class="slide-dots" id="phDots"></div>
+  <div class="slide-nav">
+    <button class="snav green" onclick="phPrev()">◀ 이전</button>
+    <button class="snav green" id="phPauseBtn" onclick="phToggle()">⏸ 일시정지</button>
+    <button class="snav green" onclick="phNext()">다음 ▶</button>
+  </div>
+</div>
+
+<!-- 가로형 포스터 (뒷면 · QR 다국어) -->
+<span class="sec">🖼 대표 포스터 (가로형 · 뒷면)</span>
+<div class="poster-row">
+  <div class="poster-box" style="flex:1">
+    <a href="https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/A5_%EC%B0%B8%EA%B0%80%EC%8B%A0%EC%B2%AD_QR_%EB%8B%A4%EA%B5%AD%EC%96%B4.jpg" target="_blank">
+      <img src="https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/A5_%EC%B0%B8%EA%B0%80%EC%8B%A0%EC%B2%AD_QR_%EB%8B%A4%EA%B5%AD%EC%96%B4.jpg" alt="뒷면 QR 다국어">
+    </a>
+    <p>대표 포스터 (뒷면 · 신청 QR 다국어)</p>
+    <button class="dl-btn green" onclick="dlHoriz('blue')">⬇ 고화질 저장</button>
+  </div>
+</div>
+
+<!-- 참여 신청 섹션 -->
+<span class="sec">📋 참여자 모집 신청</span>
+<div class="apply-box">
+  <p class="apply-box-title">⚓ '더블앵커'를 찾습니다!</p>
+  <p class="apply-box-sub">안산시 이주배경 청소년을 위한<br>공연예술 진로체험 × AI·미디어 기술융합 프로그램</p>
+  <div class="apply-info">
+    <p>👤 <strong>대상</strong> 만 12~15세 · 이주배경 청소년 우선</p>
+    <p>📅 <strong>기간</strong> 2026. 5. 9 ~ 6. 27 · 매주 토요일 10:00~12:00</p>
+    <p>📍 <strong>장소</strong> 안산시 진로체험지원센터</p>
+    <p>🎟 <strong>참가비</strong> 무료 · 예약 선발제 · 정원 15명</p>
+    <p>🎭 <strong>발표</strong> 6. 27(토) 오후 3시 · 소극장 보노마루</p>
+  </div>
+  <div class="apply-deadline">🗓 신청 마감: 2026. 5. 15(금)</div>
+  <button class="apply-btn" onclick="openApplyModal()">🌐 참여 신청하기 (다국어)</button>
+</div>
+
+<!-- 카드뉴스 슬라이드쇼 -->
+<span class="sec">📱 카드뉴스 슬라이드쇼</span>
+<div class="slideshow-wrap" id="slideWrap">
+  <div class="slide-header purple">
+    <p id="slideLabel">카드 1 / 6</p>
+    <span>클릭하면 전체보기+저장</span>
+  </div>
+  <div class="slide-container" id="slideCont" onclick="openCardModal()">
+    <div class="slide-track" id="slideTrack"></div>
+  </div>
+  <div class="slide-dots" id="slideDots"></div>
+  <div class="slide-nav">
+    <button class="snav purple" onclick="slidePrev()">◀ 이전</button>
+    <button class="snav purple" id="pauseBtn" onclick="togglePause()">⏸ 일시정지</button>
+    <button class="snav purple" onclick="slideNext()">다음 ▶</button>
+  </div>
+</div>
+
+<!-- 카드 개별 버튼 -->
+<span class="sec">📥 카드 개별 저장</span>
+<div class="card-grid" id="cardGrid"></div>
+<button class="btn-all" onclick="document.getElementById('slideWrap').scrollIntoView({behavior:'smooth'})">▶ 카드뉴스 전체보기</button>
+<div class="status" id="status"></div>
+
+<script>
+// ── URL 상수 ─────────────────────────────────
+// 가로형: Double-Anchors-Poster-Horizone 저장소
+const PY='https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EA%B0%80%EB%A1%9C%ED%98%95).jpg';
+const PB='https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/A5_%EC%B0%B8%EA%B0%80%EC%8B%A0%EC%B2%AD_QR_%EB%8B%A4%EA%B5%AD%EC%96%B4.jpg';
+
+// 세로형 5개 언어: Double-Anchors-Poster-Vertical 저장소
+const PSLIDES=[
+  {lang:'한국어', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Vertical/main/%ED%95%9C%EA%B5%AD%EC%96%B4_%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EC%84%B8%EB%A1%9C%ED%98%95)_%EC%9D%B4%EC%A3%BC%EB%B0%B0%EA%B2%BDTEXT.jpg',ext:'jpg'},
+  {lang:'English', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Vertical/main/%EC%98%81%EC%96%B4_%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors_%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EC%84%B8%EB%A1%9C%ED%98%95).jpg',ext:'jpg'},
+  {lang:'中文(简体)', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Vertical/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4_Double%20Anchors_%ED%8F%AC%EC%8A%A4%ED%84%B0_%EC%A4%91%EA%B5%AD%EC%96%B4(%EA%B0%84%EC%B2%B4)_%EC%84%B8%EB%A1%9C%ED%98%95.png',ext:'png'},
+  {lang:'Tiếng Việt', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Vertical/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4_Double%20Anchors_%ED%8F%AC%EC%8A%A4%ED%84%B0_%EB%B2%A0%ED%8A%B8%EB%82%A8%EC%96%B4_%EC%84%B8%EB%A1%9C%ED%98%95.jpg',ext:'jpg'},
+  {lang:'Русский', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Vertical/main/%EB%9F%AC%EC%8B%9C%EC%95%84%EC%96%B4_%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EC%84%B8%EB%A1%9C%ED%98%95).jpg',ext:'jpg'},
+];
+
+// 가로형 5개 언어 (앞면): Double-Anchors-Poster-Horizone 저장소
+const PHSLIDES=[
+  {lang:'한국어', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EA%B0%80%EB%A1%9C%ED%98%95).jpg',ext:'jpg'},
+  {lang:'English', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EC%98%81%EC%96%B4_%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EA%B0%80%EB%A1%9C%ED%98%95).jpg',ext:'jpg'},
+  {lang:'中文(简体)', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4_Double%20Anchors_%ED%8F%AC%EC%8A%A4%ED%84%B0_%EC%A4%91%EA%B5%AD%EC%96%B4(%EA%B0%84%EC%B2%B4).jpg',ext:'jpg'},
+  {lang:'Tiếng Việt', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4_Double%20Anchors_%ED%8F%AC%EC%8A%A4%ED%84%B0_%EB%B2%A0%ED%8A%B8%EB%82%A8%EC%96%B4_%EA%B0%80%EB%A1%9C%ED%98%95.jpg',ext:'jpg'},
+  {lang:'Русский', url:'https://raw.githubusercontent.com/leeoutheater/Double-Anchors-Poster-Horizone/main/%EB%9F%AC%EC%8B%9C%EC%95%84%EC%96%B4_%EB%8D%94%EB%B8%94%EC%95%B5%EC%BB%A4Double%20Anchors__%EC%B0%B8%EC%97%AC%EB%8C%80%EC%83%81%20%EB%AA%A8%EC%A7%91A3(%EA%B0%80%EB%A1%9C%ED%98%95).jpg',ext:'jpg'},
+];
+
+// ── 카드 캔버스 ──────────────────────────────
+const CW=480,CH=600; // 슬라이드 표시용 캔버스 (카드뉴스와 동일)
+const CARD_W=1080,CARD_H=1350; // 저장용 원본 해상도
+const NAMES=['card1_훅','card2_공감','card3_프로그램','card4_나눔','card5_신뢰','card6_신청'];
+const CLABELS=['카드 1 · 훅','카드 2 · 공감','카드 3 · 프로그램','카드 4 · 나눔','카드 5 · 신뢰','카드 6 · 신청'];
+const C={a50:'#FAEEDA',a100:'#FAC775',a400:'#BA7517',a800:'#633806',a900:'#412402',p50:'#EEEDFE',p400:'#7F77DD',p600:'#534AB7',p900:'#26215C',t50:'#E1F5EE',t400:'#1D9E75',t600:'#0F6E56',t900:'#04342C',c50:'#FAECE7',c400:'#D85A30',c600:'#993C1D',c900:'#4A1B0C',b50:'#E6F1FB',b800:'#0C447C',b900:'#042C53',g100:'#F1EFE8',w:'#fff',dk:'#1a1a2e'};
+
+function mk(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function rr(x,px,py,pw,ph,r){x.beginPath();x.moveTo(px+r,py);x.lineTo(px+pw-r,py);x.quadraticCurveTo(px+pw,py,px+pw,py+r);x.lineTo(px+pw,py+ph-r);x.quadraticCurveTo(px+pw,py+ph,px+pw-r,py+ph);x.lineTo(px+r,py+ph);x.quadraticCurveTo(px,py+ph,px,py+ph-r);x.lineTo(px,py+r);x.quadraticCurveTo(px,py,px+r,py);x.closePath();}
+function tg(x,t,px,py,bg,fg){x.font='bold 28px sans-serif';const tw=x.measureText(t).width;rr(x,px,py,tw+56,52,26);x.fillStyle=bg;x.fill();x.fillStyle=fg;x.textBaseline='middle';x.fillText(t,px+28,py+26);}
+function ww(x,t,px,py,mw,lh,f,c){x.font=f;x.fillStyle=c;x.textBaseline='top';const ws=t.split(' ');let l='',ls=[];ws.forEach(w=>{const tt=l?l+' '+w:w;if(x.measureText(tt).width>mw&&l){ls.push(l);l=w;}else l=tt;});if(l)ls.push(l);ls.forEach((s,i)=>x.fillText(s,px,py+i*lh));}
+function dt(x,px,py,c){x.beginPath();x.arc(px,py,10,0,Math.PI*2);x.fillStyle=c;x.fill();}
+function dv(x,y){x.beginPath();x.moveTo(60,y);x.lineTo(CARD_W-60,y);x.strokeStyle='#eee';x.lineWidth=2;x.stroke();}
+function qb(x,px,py,pw,ph,lc,bg){rr(x,px,py,pw,ph,8);x.fillStyle=bg;x.fill();x.fillStyle=lc;x.fillRect(px,py,6,ph);}
+function ft(x){x.fillStyle='#bbb';x.font='22px sans-serif';x.textBaseline='middle';x.textAlign='center';x.fillText('경기도·경기문화재단·안산문화재단·2026 모든예술31',CARD_W/2,CARD_H-40);x.textAlign='left';}
+function cl(x,n){x.fillStyle=C.p400;x.font='bold 26px sans-serif';x.textBaseline='middle';x.textAlign='right';x.fillText(`카드 ${n} / 6`,CARD_W-60,CARD_H-80);x.textAlign='left';}
+function ac(x){x.font='160px serif';x.fillStyle='rgba(0,0,0,0.06)';x.textBaseline='bottom';x.textAlign='right';x.fillText('⚓',CARD_W-40,500);x.textBaseline='top';x.textAlign='left';}
+
+function d0(cv){const x=cv.getContext('2d');x.fillStyle=C.a50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'공연예술 진로체험',60,60,C.a100,C.a900);x.fillStyle=C.a900;x.font='bold 86px sans-serif';x.textBaseline='top';x.fillText('"나는 왜 이렇게',60,140);x.fillText('생긴 걸까요?"',60,238);x.fillStyle='#854F0B';x.font='30px sans-serif';x.fillText('— 그림동화 〈아단ADAN〉 해바라기와의 대화 중에서',60,352);x.fillStyle=C.a900;x.font='34px sans-serif';x.fillText('두 세계를 오가는 아이의 질문 —',60,406);x.fillText('어쩌면 당신의 이야기일 수도 있습니다.',60,454);x.fillStyle=C.w;x.fillRect(0,510,CARD_W,CARD_H-510);qb(x,60,540,CARD_W-120,130,C.p400,C.g100);x.fillStyle='#333';x.font='italic 28px sans-serif';x.textBaseline='top';x.fillText('두 세계를 오가는 사람만이 알 수 있는 것이 있습니다.',82,554);x.fillText("그 '다름'이 사실은 세상을 연결하는 통로였다는 것을.",82,596);rr(x,60,700,340,54,27);x.fillStyle=C.a50;x.fill();x.fillStyle=C.a800;x.font='bold 26px sans-serif';x.textBaseline='middle';x.fillText('2026 모든예술31',80,727);rr(x,420,700,440,54,27);x.fillStyle=C.a50;x.fill();x.fillStyle=C.a800;x.fillText('경기예술활동지원 안산 선정작',440,727);x.fillStyle='#555';x.font='28px sans-serif';x.textBaseline='top';x.fillText('빛 그림 프로젝트',60,786);x.fillStyle=C.dk;x.font='bold 30px sans-serif';x.fillText('〈더블앵커 Double Anchors〉',60,828);x.fillStyle='#555';x.font='26px sans-serif';x.fillText('주관·주최 아단ADAN',60,870);dv(x,920);cl(x,1);ft(x);}
+function d1(cv){const x=cv.getContext('2d');x.fillStyle=C.b50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'이주배경 청소년에게',60,60,C.b50,C.b900);x.fillStyle=C.b900;x.font='bold 86px sans-serif';x.textBaseline='top';x.fillText('한국도, 고향도',60,140);x.fillText('낯설은 느낌?',60,238);x.fillStyle=C.b800;x.font='bold 34px sans-serif';x.fillText('사실 당신은 두 개의 닻을 가진 사람,',60,358);x.fillText('더블앵커(Double Anchors)입니다.',60,406);x.fillStyle=C.w;x.fillRect(0,468,CARD_W,CARD_H-468);['한국어가 서툴러도 괜찮습니다 — 몸짓과 이미지로 표현해요','어느 나라 출신이든 환영합니다 — 국적·학적 무관','학교 밖 청소년, 미등록 이주배경 청소년 우선 선정'].forEach((t,i)=>{dt(x,82,528+i*80,C.b800);ww(x,t,112,508+i*80,920,40,'30px sans-serif','#555');});rr(x,60,730,CARD_W-120,160,16);x.fillStyle=C.b50;x.fill();x.fillStyle=C.b900;x.font='bold 32px sans-serif';x.textBaseline='top';x.fillText('⚓ 더블앵커(Double Anchor)란?',80,750);x.fillStyle=C.b800;x.font='28px sans-serif';x.fillText('두 세계에 닻을 내릴 수 있는 사람.',80,798);x.font='bold 28px sans-serif';x.fillText('두 세계를 잇는 특별한 힘을 가진 세계시민.',80,838);['한국어','English','中文','Tiếng Việt','Русский'].forEach((l,i)=>{rr(x,60+i*196,930,188,48,24);x.fillStyle=C.g100;x.fill();x.fillStyle='#444';x.font='24px sans-serif';x.textBaseline='middle';x.textAlign='center';x.fillText(l,154+i*196,954);x.textAlign='left';});dv(x,1010);cl(x,2);ft(x);}
+function d2(cv){const x=cv.getContext('2d');x.fillStyle=C.p50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'배우 & 스태프 체험!',60,60,C.p50,C.p900);x.fillStyle=C.p900;x.font='bold 80px sans-serif';x.textBaseline='top';x.fillText('무대 위와 뒤에서는',60,140);x.fillText('무슨 일이 벌어지나?',60,234);x.fillStyle=C.p600;x.font='32px sans-serif';x.fillText('공연예술 진로체험 × AI·미디어 기술융합',60,352);x.fillStyle=C.p900;x.font='bold 32px sans-serif';x.fillText('그림동화를 이미지극으로 만드는 8회차 과정',60,398);x.fillStyle=C.w;x.fillRect(0,452,CARD_W,CARD_H-452);rr(x,60,468,470,330,14);x.fillStyle=C.p50;x.fill();x.fillStyle=C.p900;x.font='bold 32px sans-serif';x.textBaseline='top';x.fillText('배우 트랙',80,486);x.fillStyle=C.p600;x.font='26px sans-serif';x.fillText('몸과 이미지로 이야기를 표현',80,530);['연기와 이미지투사 훈련','비언어 신체 표현','장면 앙상블 연습','실제 무대 공연 발표'].forEach((t,i)=>{x.fillStyle='#ddd';x.fillRect(80,572+i*40,400,1);x.fillStyle=C.p600;x.font='24px sans-serif';x.fillText(t,80,578+i*40);});rr(x,556,468,464,330,14);x.fillStyle=C.t50;x.fill();x.fillStyle=C.t900;x.font='bold 32px sans-serif';x.fillText('스태프 트랙',576,486);x.fillStyle=C.t600;x.font='26px sans-serif';x.fillText('빛과 기술로 무대를 디자인',576,530);['AI 무대·영상 디자인','조명·음향 장비 실습','그림자 인형 제작','글라스고보 제작'].forEach((t,i)=>{x.fillStyle='#ddd';x.fillRect(576,572+i*40,400,1);x.fillStyle=C.t600;x.font='24px sans-serif';x.fillText(t,576,578+i*40);});dv(x,820);x.fillStyle='#888';x.font='26px sans-serif';x.textBaseline='top';x.fillText('AI&무대기술, 이런 걸 직접 써봅니다',60,838);[['내 몸짓이 이야기가 된다!','AI+무대기술로 그림동화를 이미지극으로'],['내 그림자를 이미지극 속으로','프로젝션 매핑으로 살아있는 그림동화'],['AI로 무대를 디자인한다면?','AI 툴로 배경·조명·음향 직접 제작'],['관객이 이야기 속으로?','참여자와 관객이 완성하는 이미지극']].forEach((tc,i)=>{const tx=[60,556,60,556][i],ty=[888,888,1008,1008][i];rr(x,tx,ty,460,100,12);x.fillStyle=C.g100;x.fill();x.fillStyle=C.p400;x.fillRect(tx,ty,6,100);x.fillStyle=C.dk;x.font='bold 24px sans-serif';x.textBaseline='top';x.fillText(tc[0],tx+14,ty+10);x.fillStyle='#666';x.font='22px sans-serif';ww(x,tc[1],tx+14,ty+46,430,30,'22px sans-serif','#666');});dv(x,1128);cl(x,3);ft(x);}
+function d3(cv){const x=cv.getContext('2d');x.fillStyle=C.t50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'6월 27일 공연 발표',60,60,C.t50,C.t900);x.fillStyle=C.t900;x.font='bold 80px sans-serif';x.textBaseline='top';x.fillText('"네게 뚫린 구멍들이',60,140);x.fillText('빛을 나누는 통로야"',60,234);x.fillStyle=C.t600;x.font='32px sans-serif';x.fillText('참여 청소년들이 직접 만든 이미지극을',60,352);x.fillText('초등학교 저학년 어린이 관객에게 선물합니다.',60,398);x.fillStyle=C.w;x.fillRect(0,450,CARD_W,CARD_H-450);qb(x,60,468,CARD_W-120,130,C.t400,C.t50);x.fillStyle='#333';x.font='italic 27px sans-serif';x.textBaseline='top';x.fillText('아단은 자신의 구멍 난 잎으로 햇빛·바람·빗물을 친구들과 나눕니다.',82,482);x.fillText("남다른 '나'가 세상을 더 아름답게 만드는 이유입니다.",82,524);['만드는 사람이 되는 경험 — 공동창작 과정중심 교육','나누는 사람이 되는 경험 — 어린 관객에게 이야기를 선물','연결되는 경험 — 공연 후 워크샵·빛 그림 전시 함께 진행'].forEach((t,i)=>{dt(x,82,636+i*78,C.t400);x.fillStyle='#555';x.font='28px sans-serif';x.textBaseline='middle';x.fillText(t,112,636+i*78);});rr(x,60,878,CARD_W-120,210,16);x.fillStyle=C.t50;x.fill();x.fillStyle=C.t900;x.font='bold 32px sans-serif';x.textBaseline='top';x.fillText('공연 발표 일정',80,898);x.fillStyle=C.t600;x.font='28px sans-serif';['📅 2026. 6. 27(토) 오후 3시','📍 소극장 보노마루','🎟 관람 무료 · 누구나 환영'].forEach((t,i)=>x.fillText(t,80,942+i*46));dv(x,1120);cl(x,4);ft(x);}
+function d4(cv){const x=cv.getContext('2d');x.fillStyle=C.c50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'믿고 맡겨도 되는 이유',60,60,C.c50,C.c900);x.fillStyle=C.c900;x.font='bold 78px sans-serif';x.textBaseline='top';x.fillText('경기도·안산문화재단이',60,140);x.fillText('함께합니다',60,232);x.fillStyle=C.c600;x.font='30px sans-serif';x.fillText('2026 모든예술31 〈경기예술활동지원 안산〉 공식 선정작',60,348);x.fillText('경기도 · 경기문화재단 · 안산문화재단 지원',60,392);x.fillStyle=C.w;x.fillRect(0,450,CARD_W,CARD_H-450);['작가 우수정 — 한국예술종합학교 무대미술과 졸업, 공연예술 및 예술교육 다수 경력','기획·제작 이태용 — 30년 공연예술 스태프 경력, 극장리우 대표','예술강사 강민정·최다솜 — 배우 및 교육연극 전문 강사진'].forEach((t,i)=>{dt(x,82,508+i*96,C.c400);ww(x,t,112,488+i*96,920,38,'28px sans-serif','#555');});dv(x,788);rr(x,60,810,CARD_W-120,200,16);x.fillStyle=C.c50;x.fill();x.fillStyle=C.c900;x.font='bold 32px sans-serif';x.textBaseline='top';x.fillText('그림동화 〈아단ADAN〉이란?',80,830);x.fillStyle=C.c600;x.font='28px sans-serif';x.fillText('구멍 난 잎사귀를 가진 아단의 이야기 —',80,876);x.fillText('안산시 이주배경 청소년을 위해 새롭게 각색한',80,918);x.fillText('다원예술 작품입니다.',80,960);dv(x,1040);cl(x,5);ft(x);}
+function d5(cv){const x=cv.getContext('2d');x.fillStyle=C.a50;x.fillRect(0,0,CARD_W,CARD_H);ac(x);tg(x,'⚓ 지금 신청하세요',60,60,C.a100,C.a900);x.fillStyle=C.a900;x.font='bold 90px sans-serif';x.textBaseline='top';x.fillText("'더블앵커'를",60,140);x.fillText('찾습니다!',60,244);x.fillStyle='#633806';x.font='32px sans-serif';x.fillText('참가비 무료 · 예약 선발제 · 정원 15명 내외',60,368);x.fillText('이주배경 청소년 우선 선발',60,412);x.fillStyle=C.w;x.fillRect(0,462,CARD_W,CARD_H-462);[['대상','만 12~15세 (누구나) · 이주배경 청소년 우선'],['기간','2026. 5. 9(토) ~ 6. 27(토) · 매주 토요일 10:00~12:00'],['장소','안산시 진로체험지원센터 (단원구 화정천서로 369, 2층)'],['발표','6. 27(토) 오후 3시 · 소극장 보노마루'],['신청마감','5. 15(금)까지 · 온라인 신청 또는 유선 문의']].forEach(([lb,val],i)=>{dt(x,82,520+i*80,C.a400);x.fillStyle=C.dk;x.font='bold 28px sans-serif';x.textBaseline='middle';x.fillText(lb,112,520+i*80);const lw=x.measureText(lb).width;x.fillStyle=lb==='신청마감'?'#c0392b':'#555';x.font='26px sans-serif';ww(x,val,112+lw+12,500+i*80,CARD_W-240-lw,36,'26px sans-serif',lb==='신청마감'?'#c0392b':'#555');});rr(x,60,876,CARD_W-120,220,16);x.fillStyle=C.p50;x.fill();x.fillStyle=C.p900;x.font='bold 32px sans-serif';x.textBaseline='top';x.fillText('신청 · 문의',80,896);x.fillStyle=C.p600;x.font='28px sans-serif';x.fillText('📞 010-3204-2178 (아단ADAN)',80,944);x.fillText('주관·주최 아단ADAN · 온라인 신청: QR 코드 스캔',80,988);x.fillStyle='#c0392b';x.font='bold 28px sans-serif';x.fillText('신청 마감 2026. 5. 15(금)',80,1032);dv(x,1120);cl(x,6);ft(x);}
+const DFS=[d0,d1,d2,d3,d4,d5];
+
+// 저장용 원본 캔버스
+const fullCanvases=[];
+// 슬라이드 표시용 축소 캔버스
+const slideCanvases=[];
+
+// 신청 모달
+function openApplyModal(){
+  document.getElementById('applyModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeApplyModal(e){if(e.target===document.getElementById('applyModal'))closeApplyModalDirect();}
+function closeApplyModalDirect(){document.getElementById('applyModal').classList.remove('open');document.body.style.overflow='';}
+
+// 포스터 슬라이드
+
+// 카드뉴스와 완전히 동일한 방식: 480×600 캔버스에 이미지 그리기
+const pCanvases=[];
+let pCur=0,pTimer=null,pPaused=false;
+
+// 가로형(앞면) 슬라이드 상태 — A3 가로형 비율 (sqrt2 ≈ 1.414:1)
+const CW_H=480, CH_H=340;
+const phCanvases=[];
+let phCur=0,phTimer=null,phPaused=false;
+let activePosterSet='V'; // 'V'=세로형, 'H'=가로형 — 모달 저장 시 분기용
+
+function buildPSlide(){
+  const track=document.getElementById('pTrack');
+  const dots=document.getElementById('pDots');
+  track.innerHTML=''; dots.innerHTML='';
+
+  PSLIDES.forEach((p,i)=>{
+    // 카드뉴스와 완전히 동일한 사이즈 캔버스
+    const cv=mk(CW,CH);
+    const ctx=cv.getContext('2d');
+    ctx.fillStyle='#e8f5ee';
+    ctx.fillRect(0,0,CW,CH);
+    ctx.fillStyle='#1D9E75';
+    ctx.font='bold 18px sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(p.lang+' 불러오는 중...',CW/2,CH/2);
+
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>{
+      ctx.fillStyle='#fff';
+      ctx.fillRect(0,0,CW,CH);
+      // 비율 유지하며 캔버스 안에 완전히 들어오도록 축소
+      const r=Math.min(CW/img.naturalWidth, CH/img.naturalHeight);
+      const dw=img.naturalWidth*r, dh=img.naturalHeight*r;
+      ctx.drawImage(img,(CW-dw)/2,(CH-dh)/2,dw,dh);
+      p.origImg=img;
+    };
+    img.onerror=()=>{
+      ctx.fillStyle='#f0f0f0'; ctx.fillRect(0,0,CW,CH);
+      ctx.fillStyle='#999'; ctx.font='14px sans-serif';
+      ctx.fillText('로드 실패: '+p.lang,CW/2,CH/2);
+    };
+    img.src=p.url;
+    p.cv=cv;
+    pCanvases.push(cv);
+
+    // 트랙에 추가 (카드뉴스와 동일)
+    track.appendChild(cv);
+
+    const dot=document.createElement('div');
+    dot.className='sdot green'+(i===0?' on':'');
+    dot.onclick=e=>{e.stopPropagation();pGo(i);};
+    dots.appendChild(dot);
+  });
+}
+
+function pGo(n){
+  pCur=n;
+  const track=document.getElementById('pTrack');
+  const cont=document.getElementById('pCont');
+  const w=cont.offsetWidth||CW;
+  track.style.transform=`translateX(-${n*w}px)`;
+  document.getElementById('pLabel').textContent=`${PSLIDES[n].lang} ${n+1} / ${PSLIDES.length}`;
+  document.querySelectorAll('#pDots .sdot').forEach((d,i)=>d.classList.toggle('on',i===n));
+}
+function pNext(){pGo((pCur+1)%PSLIDES.length);if(!pPaused){pStop();pStart();}}
+function pPrev(){pGo((pCur+PSLIDES.length-1)%PSLIDES.length);if(!pPaused){pStop();pStart();}}
+function pStart(){pStop();if(!pPaused)pTimer=setInterval(()=>pGo((pCur+1)%PSLIDES.length),3000);}
+function pStop(){clearInterval(pTimer);pTimer=null;}
+function pToggle(){pPaused=!pPaused;document.getElementById('pPauseBtn').textContent=pPaused?'▶ 재생':'⏸ 일시정지';pPaused?pStop():pStart();}
+
+function openPModal(){
+  activePosterSet='V';
+  const p=PSLIDES[pCur];
+  const mc=document.getElementById('posterModalCanvas');
+  if(p.origImg){
+    mc.width=p.origImg.naturalWidth; mc.height=p.origImg.naturalHeight;
+    mc.style.cssText='max-width:100%;max-height:80vh;border-radius:12px;display:block';
+    mc.getContext('2d').drawImage(p.origImg,0,0);
+  } else if(p.cv){
+    mc.width=CW; mc.height=CH;
+    mc.style.cssText='max-width:100%;max-height:80vh;border-radius:12px;display:block';
+    mc.getContext('2d').drawImage(p.cv,0,0);
+  }
+  document.getElementById('posterModalLabel').textContent=`대표 포스터 (세로형) — ${p.lang}`;
+  document.getElementById('posterModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closePModal(e){if(e.target===document.getElementById('posterModal'))closePModalDirect();}
+function closePModalDirect(){document.getElementById('posterModal').classList.remove('open');document.body.style.overflow='';}
+function savePFromModal(){
+  const isH=activePosterSet==='H';
+  const p=isH?PHSLIDES[phCur]:PSLIDES[pCur];
+  const src=p.origImg||p.cv;
+  if(!src)return;
+  const cv=mk(src.naturalWidth||CW,src.naturalHeight||CH);
+  cv.getContext('2d').drawImage(src,0,0);
+  const a=document.createElement('a');
+  a.href=cv.toDataURL(p.ext==='png'?'image/png':'image/jpeg',.95);
+  const orient=isH?'가로형':'세로형';
+  a.download=`더블앵커_${orient}_${p.lang}.${p.ext}`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  document.getElementById('status').textContent=`✅ ${p.lang} ${orient} 포스터 저장 완료!`;
+}
+
+// ── 가로형(앞면) 5개 언어 슬라이드 ──────────────
+function buildPHSlide(){
+  const track=document.getElementById('phTrack');
+  const dots=document.getElementById('phDots');
+  track.innerHTML=''; dots.innerHTML='';
+
+  PHSLIDES.forEach((p,i)=>{
+    // 가로형 비율 캔버스(CW_H x CH_H) → 흰 여백 제거
+    const cv=mk(CW_H,CH_H);
+    const ctx=cv.getContext('2d');
+    ctx.fillStyle='#e8f5ee';
+    ctx.fillRect(0,0,CW_H,CH_H);
+    ctx.fillStyle='#1D9E75';
+    ctx.font='bold 18px sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(p.lang+' 불러오는 중...',CW_H/2,CH_H/2);
+
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>{
+      // 이미지 실제 비율에 맞춰 캔버스 자체 크기를 재조정 → 여백 0
+      const ratio=img.naturalHeight/img.naturalWidth;
+      cv.width=CW_H;
+      cv.height=Math.round(CW_H*ratio);
+      const ctx2=cv.getContext('2d');
+      ctx2.fillStyle='#fff';
+      ctx2.fillRect(0,0,cv.width,cv.height);
+      ctx2.drawImage(img,0,0,cv.width,cv.height);
+      p.origImg=img;
+    };
+    img.onerror=()=>{
+      ctx.fillStyle='#f0f0f0'; ctx.fillRect(0,0,CW_H,CH_H);
+      ctx.fillStyle='#999'; ctx.font='14px sans-serif';
+      ctx.fillText('로드 실패: '+p.lang,CW_H/2,CH_H/2);
+    };
+    img.src=p.url;
+    p.cv=cv;
+    phCanvases.push(cv);
+    track.appendChild(cv);
+
+    const dot=document.createElement('div');
+    dot.className='sdot green'+(i===0?' on':'');
+    dot.onclick=e=>{e.stopPropagation();phGo(i);};
+    dots.appendChild(dot);
+  });
+}
+
+function phGo(n){
+  phCur=n;
+  const track=document.getElementById('phTrack');
+  const cont=document.getElementById('phCont');
+  const w=cont.offsetWidth||CW;
+  track.style.transform=`translateX(-${n*w}px)`;
+  document.getElementById('phLabel').textContent=`${PHSLIDES[n].lang} ${n+1} / ${PHSLIDES.length}`;
+  document.querySelectorAll('#phDots .sdot').forEach((d,i)=>d.classList.toggle('on',i===n));
+}
+function phNext(){phGo((phCur+1)%PHSLIDES.length);if(!phPaused){phStop();phStart();}}
+function phPrev(){phGo((phCur+PHSLIDES.length-1)%PHSLIDES.length);if(!phPaused){phStop();phStart();}}
+function phStart(){phStop();if(!phPaused)phTimer=setInterval(()=>phGo((phCur+1)%PHSLIDES.length),3000);}
+function phStop(){clearInterval(phTimer);phTimer=null;}
+function phToggle(){phPaused=!phPaused;document.getElementById('phPauseBtn').textContent=phPaused?'▶ 재생':'⏸ 일시정지';phPaused?phStop():phStart();}
+
+function openPHModal(){
+  activePosterSet='H';
+  const p=PHSLIDES[phCur];
+  const mc=document.getElementById('posterModalCanvas');
+  if(p.origImg){
+    mc.width=p.origImg.naturalWidth; mc.height=p.origImg.naturalHeight;
+    mc.style.cssText='max-width:100%;max-height:80vh;border-radius:12px;display:block';
+    mc.getContext('2d').drawImage(p.origImg,0,0);
+  } else if(p.cv){
+    mc.width=p.cv.width||CW_H; mc.height=p.cv.height||CH_H;
+    mc.style.cssText='max-width:100%;max-height:80vh;border-radius:12px;display:block';
+    mc.getContext('2d').drawImage(p.cv,0,0);
+  }
+  document.getElementById('posterModalLabel').textContent=`대표 포스터 (가로형) — ${p.lang}`;
+  document.getElementById('posterModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+// ── 카드뉴스 슬라이드 ────────────────────────
+let curSlide=0,slideTimer=null,isPaused=false;
+
+function buildCardSlide(){
+  const track=document.getElementById('slideTrack');
+  const dots=document.getElementById('slideDots');
+  track.innerHTML=''; dots.innerHTML='';
+
+  DFS.forEach((fn,i)=>{
+    const full=mk(CARD_W,CARD_H); fn(full); fullCanvases.push(full);
+    const small=mk(CW,CH);
+    small.getContext('2d').drawImage(full,0,0,CW,CH);
+    slideCanvases.push(small);
+    track.appendChild(small);
+
+    const dot=document.createElement('div');
+    dot.className='sdot purple'+(i===0?' on':'');
+    dot.onclick=()=>goSlide(i);
+    dots.appendChild(dot);
+  });
+}
+
+function goSlide(n){
+  curSlide=n;
+  const track=document.getElementById('slideTrack');
+  const cont=document.getElementById('slideCont');
+  const w=cont.offsetWidth||CW;
+  track.style.transform=`translateX(-${n*w}px)`;
+  document.getElementById('slideLabel').textContent=`카드 ${n+1} / 6`;
+  document.querySelectorAll('#slideDots .sdot').forEach((d,i)=>d.classList.toggle('on',i===n));
+}
+function slideNext(){goSlide((curSlide+1)%6);if(!isPaused){stopAuto();startAuto();}}
+function slidePrev(){goSlide((curSlide+5)%6);if(!isPaused){stopAuto();startAuto();}}
+function startAuto(){stopAuto();if(!isPaused)slideTimer=setInterval(()=>goSlide((curSlide+1)%6),3000);}
+function stopAuto(){clearInterval(slideTimer);slideTimer=null;}
+function togglePause(){isPaused=!isPaused;document.getElementById('pauseBtn').textContent=isPaused?'▶ 재생':'⏸ 일시정지';isPaused?stopAuto():startAuto();}
+
+function openCardModal(){
+  const mc=document.getElementById('modalCanvas');
+  const full=fullCanvases[curSlide];
+  const maxW=Math.min(window.innerWidth-40,480);
+  const mh=maxW*(CARD_H/CARD_W);
+  mc.width=maxW; mc.height=mh;
+  mc.style.cssText=`max-width:100%;max-height:80vh;border-radius:12px;display:block`;
+  mc.getContext('2d').drawImage(full,0,0,maxW,mh);
+  document.getElementById('modalLabel').textContent=CLABELS[curSlide];
+  document.getElementById('cardModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('cardModal'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('cardModal').classList.remove('open');document.body.style.overflow='';}
+function saveFromModal(){
+  const a=document.createElement('a');
+  a.href=fullCanvases[curSlide].toDataURL('image/jpeg',.95);
+  a.download=`더블앵커_${NAMES[curSlide]}.jpg`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  document.getElementById('status').textContent=`✅ ${CLABELS[curSlide]} 저장 완료!`;
+}
+
+// ── 가로형 포스터 저장 ────────────────────────
+function dlHoriz(w){
+  const url=w==='yellow'?PY:PB;
+  const fname=w==='yellow'?'더블앵커_대표포스터_앞면.jpg':'더블앵커_대표포스터_뒷면.jpg';
+  const img=new Image(); img.crossOrigin='anonymous';
+  img.onload=()=>{
+    const cv=mk(img.naturalWidth,img.naturalHeight);
+    cv.getContext('2d').drawImage(img,0,0);
+    const a=document.createElement('a'); a.href=cv.toDataURL('image/jpeg',.95); a.download=fname;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  };
+  img.onerror=()=>window.open(url,'_blank');
+  img.src=url+'?t='+Date.now();
+}
+
+// ── 카드 개별 버튼 ────────────────────────────
+function buildCardBtns(){
+  const grid=document.getElementById('cardGrid');
+  fullCanvases.forEach((full,i)=>{
+    const btn=document.createElement('button');
+    btn.className='card-btn';
+    btn.onclick=()=>{curSlide=i;openCardModal();};
+    const thumb=mk(320,400);
+    thumb.getContext('2d').drawImage(full,0,0,320,400);
+    btn.appendChild(thumb);
+    const lbl=document.createElement('div');
+    lbl.className='card-btn-label';
+    lbl.textContent=CLABELS[i]+' — 클릭하여 보기';
+    btn.appendChild(lbl);
+    grid.appendChild(btn);
+  });
+}
+
+// ── 초기화 ────────────────────────────────────
+window.onload=()=>{
+  buildPHSlide(); phGo(0); phStart();
+  buildPSlide(); pGo(0); pStart();
+  buildCardSlide(); goSlide(0); startAuto();
+  buildCardBtns();
+};
+</script>
+</body>
+</html>
